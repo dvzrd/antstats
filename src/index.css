@@ -1,0 +1,166 @@
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: #1C1C1C;
+  font-family: 'Kanit', 'Open Sans', Arial, sans-serif;
+  font-weight: normal;
+  line-height: 1.5;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* title */
+h1, h2, h3,
+h4, h5, h6,
+.title {
+  margin: 2em auto 1em;
+  color: #050503;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.title small,
+.title .sub {
+  display: block;
+  margin-top: 0.5em;
+  font-size: 50%;
+  font-weight: normal;
+}
+
+/* link */
+a,
+.link {
+  position: relative;
+  color: #FC4000;
+  transition: all 250ms;
+}
+
+a:hover,
+.link:hover {
+  color: #E23C03;
+}
+
+/* button */
+button,
+.button {
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 1em;
+  padding: 1em;
+  min-width: 16em;
+  outline: 0;
+  box-shadow: 0.1em 0.075em 0 0.15em #060702;
+  border: 0.05em solid #fff;
+  border-top: 0.2em solid;
+  border-left: 0.2em solid;
+  background-color: #FC4000;
+  color: #fff;
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  transition: all 250ms;
+}
+
+button:hover,
+.button:hover {
+  border: 0.05em solid #FC4000;
+  border-bottom: 0.2em solid;
+  border-right: 0.2em solid;
+  box-shadow: -0.1em -0.075em 0 0.15em #060702;
+  background-color: #060702;
+  color: #FC4000;
+}
+
+button:active,
+.button:active {
+
+}
+
+/* image */
+img,
+.image {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* section (container) */
+section,
+.section {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+  padding: 0;
+}
+
+section.contained,
+.section.contained {
+  max-width: 38em;
+  margin-bottom: 2em;
+	padding: 1em;
+}
+
+@media only screen and (min-width: 48em) {
+  section.contained,
+  .section.contained {
+    max-width: 48em;
+  }
+}
+
+/* figure (component) */
+figure,
+.figure {
+  display: block;
+	position: relative;
+	width: 100%;
+  max-width: 38em;
+	height: auto;
+	margin: 0 auto;
+  padding: 1em;
+}
+
+@media only screen and (min-width: 48em) {
+  figure,
+  .figure {
+    max-width: 48em;
+  }
+}
+
+/* fluid figure */
+figure.fluid,
+.figure.fluid {
+  max-width: 100%;
+  padding: 0;
+}
+
+figure.fluid .caption,
+.figure.fluid .caption {
+  max-width: 38em;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+@media only screen and (min-width: 48em) {
+  figure.fluid .caption,
+  .figure.fluid .caption {
+    max-width: 48em;
+  }
+}
+
+/* contained figure */
+section.contained figure,
+.section.contained .figure {
+  max-width: 100%;
+  padding: 0;
+}
