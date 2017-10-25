@@ -1,6 +1,6 @@
 # ANT STATS
 
-An app for purveyors of the competitive ant racing scene, who wish to view statistics related to competing ants before races take place.
+A React/Redux/Apollo web app for purveyors of the competitive ant racing scene, who wish to view statistics related to competing ants before races take place.
 
 > This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
