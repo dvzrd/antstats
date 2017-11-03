@@ -42,32 +42,37 @@ export function calculateAnts(ants) {
   };
 }
 
+const calculation = (calculation) => {
+
+  console.log('promise calculation')
+
+  return new Promise((resolve) => {
+    resolve(calculation)
+  })
+}
+
 export function getCalculation(ant) {
   console.log('getting calculation for: ', ant)
 
+  // @TODO: move outside of getCalculation
   const generateCalculation = generateAntWinLikelihoodCalculator()
-  const calc = generateCalculation((calculation) => {
-    console.log(calculation)
-    return calculation
+  let generatedCalculation = generateCalculation((callback) => {
+    calculation(callback).then(function(response){
+      console.log(response)
+      return response
+    })
   })
 
-  console.log(calc)
+  console.log(generatedCalculation)
 
-  if (calc) {
-    const calculatedAnt = Object.assign({}, ant, {
-      calculating: false,
-      calculation: calc
-    })
-
-    return {
-      type: GET_CALCULATION,
-      payload: calculatedAnt
-    }
-  }
+  const calculatedAnt = Object.assign({}, ant, {
+    calculating: false,
+    calculation: 10
+  })
 
   return {
     type: GET_CALCULATION,
-    payload: ant
+    payload: calculatedAnt
   }
 }
 
