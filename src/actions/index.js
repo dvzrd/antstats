@@ -23,6 +23,8 @@ export function fetchAnts(ants) {
     }
   })
 
+  console.log(updatedAnts)
+
   return {
     type: FETCH_ANTS,
     payload: updatedAnts
@@ -57,7 +59,7 @@ export function getCalculation(ant) {
   // @TODO: move outside of getCalculation
   const generateCalculation = generateAntWinLikelihoodCalculator()
   let generatedCalculation = generateCalculation((callback) => {
-    calculation(callback).then(function(response){
+    calculation(callback).then((response) => {
       console.log(response)
       return response
     })
