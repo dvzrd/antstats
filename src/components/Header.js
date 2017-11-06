@@ -49,7 +49,7 @@ const Description = styled.small`
   letter-spacing: 0;
   line-height: 1.25;
 
-  .main.layout .header.section .title .sub {
+  @media only screen and (min-width: 48em) {
     max-width: 75%;
     padding-left: 25%;
   }

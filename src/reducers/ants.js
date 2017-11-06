@@ -1,18 +1,28 @@
-import { FETCH_ANTS, CALCULATE_ANTS, GET_CALCULATION, SET_CALCULATION } from '../actions/index';
+import { RUN_CALCULATIONS, END_CALCULATIONS, RESET_CALCULATIONS } from '../actions'
 
-const INITIAL_STATE = { all: [], calculatedAnt: null };
+const INITIAL_STATE = {
+    calculating: false,
+    calculated: false,
+    ants: []
+}
 
-export default function(state = INITIAL_STATE, action) {
-  switch(action.type) {
-    case FETCH_ANTS:
-      return { ...state, all: action.payload }
-    case CALCULATE_ANTS:
-      return { ...state, all: action.payload }
-    case GET_CALCULATION:
-      return { ...state, calculatedAnt: action.payload }
-    case SET_CALCULATION:
-      return { ...state, all: action.payload }
+const ants = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case RUN_CALCULATIONS:
+      return {
+        ...state,
+        calculating: true
+      }
+    case END_CALCULATIONS:
+      return {
+        ...state,
+        calculating: false,
+        calculated: true
+      }
+    case RESET_CALCULATIONS:
     default:
-      return state;
+      return state
   }
 }
+
+export default ants

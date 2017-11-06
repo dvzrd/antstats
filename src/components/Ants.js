@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Calculation from './Calculation'
+import Calculation from '../containers/calculation'
 
 const Ants = ({ ants }) => (
   <Component>
@@ -170,13 +170,26 @@ const Name = styled.h1`
   z-index: 2;
   transition: all 500ms;
 
+  ${Ant}:hover & {
+    color: #FC4000;
+  }
+
+  ${Ant}:nth-child(even) & {
+    margin-right: 0;
+    margin-left: auto;
+  }
+
   @media only screen and (min-width: 48em) {
     font-size: 2em;
   }
 
   @media only screen and (min-width: 75em) {
     margin-top: 4em;
-  }    
+
+    ${Ant}:last-child & {
+      margin-top: 6em;
+    }
+  }
 `
 
 const List = styled.ul`
@@ -188,12 +201,17 @@ const List = styled.ul`
   list-style: none;
   transition: all 500ms;
 
+  ${Ant}:hover & {
+    color: #050503;
+  }
+
   @media only screen and (min-width: 48em) {
     font-size: 1.15em;
   }
 `
 
 const Item = styled.li`
+  margin-bottom: 0.25em;
 
   &::before {
     content: '•';
@@ -202,6 +220,10 @@ const Item = styled.li`
     margin-left: -1em;
     color: #050503;
     transition: all 500ms;
+
+    ${Ant}:hover & {
+      color: #FC4000;
+    }
   }
 `
 
@@ -213,6 +235,15 @@ const Image = styled.img`
   z-index: -1;
   filter: grayscale(100%);
   transition: all 500ms;
+
+  ${Ant}:hover & {
+    filter: grayscale(0);
+  }
+
+  ${Ant}:nth-child(even) & {
+    right: auto;
+    left: -15%;
+  }
 
   @media only screen and (min-width: 30em) {
     width: 85%
@@ -226,15 +257,24 @@ const Image = styled.img`
     right: -35%;
     bottom: 20%;
     width: 100%
+
+    ${Ant}:nth-child(even) & {
+      left: -35%;
+      right: auto;
+    }
+
+    ${Ant}:last-child & {
+      bottom: 0;
+    }
   }
 `
 
 const Title = styled.strong`
-
+  font-weight: bold;
 `
 
 const Value = styled.em`
-
+  font-weight: lighter;
 `
 
 Ants.propTypes = {

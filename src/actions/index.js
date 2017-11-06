@@ -1,100 +1,77 @@
 import { generateAntWinLikelihoodCalculator } from '../utils/generateAntWinLikelihoodCalculator'
-import ant01 from '../images/ant01.jpg'
-import ant02 from '../images/ant02.jpg'
-import ant03 from '../images/ant03.jpg'
-import ant04 from '../images/ant04.jpg'
-import ant05 from '../images/ant05.jpg'
 
-export const FETCH_ANTS = 'FETCH_ANTS'
-export const CALCULATE_ANTS = 'CALCULATE_ANTS'
-export const GET_CALCULATION = 'GET_CALCULATION'
+export const RUN_CALCULATIONS = 'RUN_CALCULATIONS'
+export const END_CALCULATIONS = 'END_CALCULATIONS'
+export const RESET_CALCULATIONS = 'RESET_CALCULATIONS'
+export const REQUEST_CALCULATION = 'REQUEST_CALCULATION'
+export const RECEIVE_CALCULATION = 'RECEIVE_CALCULATION'
 export const SET_CALCULATION = 'SET_CALCULATION'
+export const RESET_CALCULATION = 'RESET_CALCULATION'
 
-export function fetchAnts(ants) {
-  // @TODO: fetch images from cdn
-  const images = [ ant01, ant02, ant03, ant04, ant05 ]
+export const runCalculations = ants => ({
+  type: RUN_CALCULATIONS,
+  ants
+})
 
-  const updatedAnts = ants.map((ant, index) => {
-    return {
-      ...ant,
-      image: images[index],
-      calculating: false,
-      calculation: null
-    }
-  })
+export const endCalculations = ants => ({
+  type: END_CALCULATIONS,
+  ants
+})
 
-  console.log(updatedAnts)
+export const resetCalculations = ants => ({
+  type: RESET_CALCULATIONS,
+  ants
+})
 
-  return {
-    type: FETCH_ANTS,
-    payload: updatedAnts
-  };
-}
+export const requestCalculation = ant => ({
+  type: REQUEST_CALCULATION,
+  ant 
+})
 
-export function calculateAnts(ants) {
-  console.log('calculating ants')
+export const receiveCalculation = (ant, calculation) => ({
+  type: RECEIVE_CALCULATION,
+  ant,
+  calculation 
+})
 
-  const updatedAnts = ants.map(ant => {
-    return Object.assign({}, ant, { calculating: true })
-  })
+const calculate = (ant) => {
 
-  return {
-    type: CALCULATE_ANTS,
-    payload: updatedAnts
-  };
-}
-
-const calculation = (calculation) => {
-
-  console.log('promise calculation')
+  console.log('CALCULATE ', ant)
 
   return new Promise((resolve) => {
-    resolve(calculation)
+    resolve(ant)
   })
 }
 
-export function getCalculation(ant) {
-  console.log('getting calculation for: ', ant)
+const calculating = (state, ant) => {
+  console.log('calculating ', ant, state)
 
-  // @TODO: move outside of getCalculation
-  const generateCalculation = generateAntWinLikelihoodCalculator()
-  let generatedCalculation = generateCalculation((callback) => {
-    calculation(callback).then((response) => {
-      console.log(response)
-      return response
-    })
-  })
-
-  console.log(generatedCalculation)
-
-  const calculatedAnt = Object.assign({}, ant, {
-    calculating: false,
-    calculation: 10
-  })
-
-  return {
-    type: GET_CALCULATION,
-    payload: calculatedAnt
+  if (state.calculating) {
+    return true
   }
+
+  if (ant.calculation > 0) {
+    return false
+  }
+
+  return false
 }
 
-export function setCalculation(ants, calculatedAnt) {
-  console.log('setting calculation for: ', calculatedAnt)
-  console.log(ants)
+const getCalculation = ant => dispatch => {
+  dispatch(requestCalculation(ant))
+  const generateCalculation = generateAntWinLikelihoodCalculator()
 
-  const calculatedAnts = ants.map(ant => {
-    if (ant.name === calculatedAnt.name) {
-      return Object.assign({}, ant, {
-        calculating: false,
-        calculation: calculatedAnt.calculation
+  return generateCalculation((ant) => {
+    calculate(ant)
+      .then((calculation) => {
+        console.log(ant, calculation)
+        dispatch(receiveCalculation(ant, calculation))
       })
-    }
-    return ant
   })
-  console.log(calculatedAnts)
+}
 
-  return {
-    type: SET_CALCULATION,
-    payload: calculatedAnts
+export const runCalculation = ant => (dispatch, getState) =>  {
+  if (calculating(getState(), ant)) {
+    return dispatch(getCalculation(ant))
   }
 }

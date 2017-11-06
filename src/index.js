@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import reducers from './reducers';
-import App from './containers/App'
+import App from './containers/app'
 import registerServiceWorker from './utils/registerServiceWorker'
 
 const networkInterface = createNetworkInterface({

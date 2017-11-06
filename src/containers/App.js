@@ -4,30 +4,53 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { calculateAnts } from '../actions/index'
-import Header from '../components/Header'
-import Ants from '../components/Ants'
-import CTA from '../components/CTA'
-import Footer from '../components/Footer'
+import { runCalculations, endCalculations, resetCalculations } from '../actions/index'
+import Header from '../components/header'
+import Ants from '../components/ants'
+import CTA from '../components/cta'
+import Footer from '../components/footer'
 
 class App extends Component {
 
-  // static propTypes = {
-  //   calculating: PropTypes.bool.isRequired,
-  //   dispatch: PropTypes.func.isRequired
-  // }
+  static propTypes = {
+    calculating: PropTypes.bool.isRequired,
+    calculated: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    ants: PropTypes.array.isRequired
+  }
 
-  handleCalculationsRequest = () => {
-    // @TODO: get ants directly from props
-    // fetch ants in DidComponentMount()
-    const { calculateAnts } = this.props
-    // const ants = fetchAnts(antsQuery.ants).payload
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props, nextProps)
+    // @TODO: compare lengths with another array
+    if (nextProps.ants.length === 5) {
+      const { dispatch, ants } = nextProps
 
-    // calculateAnts(ants)
+      dispatch(endCalculations(ants))
+    }
+  }
+
+  handleRunCalculations = () => {
+    const { calculating, dispatch, ants } = this.props
+    
+    if (!calculating) {
+      dispatch(runCalculations(ants))
+      console.log('RUNNING CALCULATIONS', calculating)
+      console.log(this.props)
+    }
+  }
+
+  handleResetCalculations = () => {
+    const { calculating, dispatch, ants } = this.props
+
+    if (!calculating) {
+      dispatch(resetCalculations(ants))
+      console.log('RESET CALCULATIONS', calculating)
+    }
   }
 
   renderAnts() {
     const { antsQuery } = this.props
+    const ants = antsQuery.allAnts
 
     if (antsQuery && antsQuery.loading) {
       return <Message>Loading</Message>
@@ -37,20 +60,23 @@ class App extends Component {
       return <Message>Error</Message>
     }
 
-    const ants = antsQuery.allAnts
-
-    console.log(ants)
-    
     return <Ants ants={ ants } />
   }
 
   render() {
+    const { calculating, calculated } = this.props
+
+    console.log(this.props)
+
     return (
       <Container>
         <Header />
         <Main>
           { this.renderAnts() }
-          <CTA handleCalculations={ this.handleCalculationsRequest } />
+          <CTA calculating={ calculating } 
+               calculated={ calculated } 
+               handleRunCalculations={ this.handleRunCalculations }
+               handleResetCalculations={ this.handleResetCalculations } />
         </Main>
         <Footer />
       </Container>
@@ -82,12 +108,13 @@ const Message = styled.aside`
   min-height: 100vh;
   align-items: center;
   justify-content: center;
+  background-color: #fff;
+  color: #fd4000;
   font-size: 2em;
   text-align: center;
+  z-index: 10;
 `
 
-// @TODO: move to actions
-// to map state to props
 export const ANTS_QUERY = gql`
 query AntsQuery {
   allAnts {
@@ -102,7 +129,17 @@ query AntsQuery {
 }
 `
 
+const mapStateToProps = state => {
+  const { ants } = state
+
+  return {
+    calculating: ants.calculating,
+    calculated: ants.calculated,
+    ants: ants.ants
+  }
+}
+
 export default compose(
   graphql(ANTS_QUERY, { name: 'antsQuery' }),
-  connect(null, { calculateAnts })
+  connect(mapStateToProps)
 )(App);
