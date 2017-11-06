@@ -25,8 +25,7 @@ const Ants = ({ ants }) => (
                 <Value>{ ant.weight }mg</Value>
               </Item>
             </List>
-            <Calculation calculating={ ant.calculating }
-                        calculation={ ant.calculation } />
+            <Calculation ant={ ant } />
             <Image src={ ant.image } alt={ ant.name } />
           </Figure>
         </Ant>
@@ -55,6 +54,9 @@ const Ant = styled.li`
   margin-top: 6em;
   margin-bottom: 6em;
   padding: 0;
+  box-shadow: 0 0 4em 2em #fff inset;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%), url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAHElEQVQYV2NkYWFq+PPnXwMDFDDCGBgCMJUYKgBJTQgFoJ6kJQAAAABJRU5ErkJggg==);
+  background-repeat: repeat;
   text-align: left;
 
   &::before {
@@ -84,6 +86,7 @@ const Ant = styled.li`
       border-top: 2em solid rgba(6, 7, 2, 0.95);
       background-color: #fff;
       transform: rotate(3.5deg);
+      z-index: -1;
     }
   }
 

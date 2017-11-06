@@ -2,8 +2,7 @@ import { RUN_CALCULATIONS, END_CALCULATIONS, RESET_CALCULATIONS } from '../actio
 
 const INITIAL_STATE = {
     calculating: false,
-    calculated: false,
-    ants: []
+    calculated: {}
 }
 
 const ants = (state = INITIAL_STATE, action) => {
@@ -17,7 +16,7 @@ const ants = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         calculating: false,
-        calculated: true
+        calculated: action.calculated
       }
     case RESET_CALCULATIONS:
     default:

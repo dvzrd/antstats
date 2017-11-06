@@ -1,5 +1,5 @@
 # project: cj9lxvyw87kz90121d068pvcr
-# version: 5
+# version: 6
 
 type Ant @model {
   id: ID! @isUnique
@@ -8,8 +8,6 @@ type Ant @model {
   length: Int!
   weight: Int!
   image: String!
-  calculation: Int!
-  calculating: Boolean!
 }
 
 type File @model {

@@ -10,7 +10,7 @@ const Footer = () =>
     </Figure>
   </Component>
 
-const Component = styled.header`
+const Component = styled.footer`
   display: flex;
   position: fixed;
   bottom: 0;
@@ -18,6 +18,8 @@ const Component = styled.header`
   width: 100%;
   min-height: 25vh;
   background-color: #343434;
+  background-image: linear-gradient(90deg, rgba(6, 7, 2, 0.5) 50%, rgba(52, 52, 52, 0.25) 50%);
+  background-size: 1.5em 1.5em;
   z-index: 1;
 `
 

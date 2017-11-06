@@ -28,11 +28,15 @@ export const requestCalculation = ant => ({
   ant 
 })
 
-export const receiveCalculation = (ant, calculation) => ({
-  type: RECEIVE_CALCULATION,
-  ant,
-  calculation 
-})
+export const receiveCalculation = (ant, calculation) => {
+  console.log('RECEIVE CALCULATION ', ant, calculation)
+
+  return {
+    type: RECEIVE_CALCULATION,
+    ant,
+    calculation 
+  }
+}
 
 const calculate = (ant) => {
 
@@ -46,11 +50,14 @@ const calculate = (ant) => {
 const calculating = (state, ant) => {
   console.log('calculating ', ant, state)
 
-  if (state.calculating) {
-    return true
-  }
+  // causes infinite loop
+  // if (state.ants.calculating) {
+  //   console.log('calculating is true')
+  //   return true
+  // }
 
   if (ant.calculation > 0) {
+    console.log('received ant calculation')
     return false
   }
 
@@ -60,6 +67,8 @@ const calculating = (state, ant) => {
 const getCalculation = ant => dispatch => {
   dispatch(requestCalculation(ant))
   const generateCalculation = generateAntWinLikelihoodCalculator()
+
+  console.log('GET CALCULATION ', ant)
 
   return generateCalculation((ant) => {
     calculate(ant)
@@ -71,6 +80,8 @@ const getCalculation = ant => dispatch => {
 }
 
 export const runCalculation = ant => (dispatch, getState) =>  {
+  console.log('RUN CALCULATION ', ant, getState())
+
   if (calculating(getState(), ant)) {
     return dispatch(getCalculation(ant))
   }

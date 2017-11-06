@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import antsReducer from './ants'
-import calculationReducer from './calculation'
+import calculationsReducer from './calculations'
 
 const rootReducer = combineReducers({
   ants: antsReducer,
-  calculation: calculationReducer
+  calculations: calculationsReducer
 })
 
 export default rootReducer

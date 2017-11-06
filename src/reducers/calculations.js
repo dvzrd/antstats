@@ -3,34 +3,30 @@ import {
   SET_CALCULATION, RESET_CALCULATION
 } from '../actions/index';
 
-const INITIAL_STATE = {
-  ant: {},
-  calculating: false,
-  calculated: false,
-  calculation: 0
-}
-
-const calculation = (state = INITIAL_STATE, action) => {
+const calculations = (state = {}, action) => {
   switch (action.type) {
     case REQUEST_CALCULATION:
       return {
         ...state,
-        ant: action.ant,
-        calculating: true
+        ant: {
+          ...action.ant,
+          calculating: true,
+          calculation: 0
+        }
       }
     case RECEIVE_CALCULATION:
       return {
         ...state,
-        ant: action.ant,
-        calculation,
-        calculating: false
+        ant: {
+          ...action.ant,
+          calculating: false,
+          calculation: action.calculation
+        }
       }
     case SET_CALCULATION:
       return {
         ...state,
-        ant: action.ant,
-        calculation,
-        calculated: true
+        ant: action.ant
       }
     case RESET_CALCULATION:
     default:
@@ -38,4 +34,4 @@ const calculation = (state = INITIAL_STATE, action) => {
   }
 }
 
-export default calculation
+export default calculations

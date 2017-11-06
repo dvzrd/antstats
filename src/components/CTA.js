@@ -2,19 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-const CTA = ({ calculating, calculated, handleRunCalculations, handleResetCalculations }) =>
+const CTA = ({ label, handleAction }) =>
   <Component>
-    { calculated ?
-      <Button type="button"
-            onClick={ () => handleResetCalculations() }>
-        Restart Calculations
-      </Button> :
-      ( calculating ? 
-        null :
-        <Button type="button"
-                onClick={ () => handleRunCalculations() }>
-          Calculate Win Rates
-        </Button>)}
+    <Button type="button"
+            onClick={ () => handleAction() }>
+      { label }
+    </Button>
   </Component>
 
 const Component = styled.aside`
@@ -63,10 +56,8 @@ const Button = styled.button`
 `
 
 CTA.propTypes = {
-  calculating: PropTypes.bool.isRequired,
-  calculated: PropTypes.bool.isRequired,
-  handleRunCalculations: PropTypes.func.isRequired,
-  handleResetCalculations: PropTypes.func.isRequired
+  label: PropTypes.string.isRequired,
+  handleAction: PropTypes.func.isRequired
 }
 
 export default CTA

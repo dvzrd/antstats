@@ -14,37 +14,37 @@ class App extends Component {
 
   static propTypes = {
     calculating: PropTypes.bool.isRequired,
-    calculated: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    ants: PropTypes.array.isRequired
+    calculated: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   componentWillReceiveProps(nextProps) {
+    const allCalculated = Object.keys(nextProps.calculated).length === 5
+    
     console.log(this.props, nextProps)
-    // @TODO: compare lengths with another array
-    if (nextProps.ants.length === 5) {
-      const { dispatch, ants } = nextProps
+    if (allCalculated) {
+      const { dispatch, calculated } = nextProps
 
-      dispatch(endCalculations(ants))
+      dispatch(endCalculations(calculated))
     }
   }
 
   handleRunCalculations = () => {
-    const { calculating, dispatch, ants } = this.props
-    
+    const { calculating, dispatch } = this.props
+     
     if (!calculating) {
-      dispatch(runCalculations(ants))
+      dispatch(runCalculations(calculating))
       console.log('RUNNING CALCULATIONS', calculating)
-      console.log(this.props)
     }
   }
 
   handleResetCalculations = () => {
-    const { calculating, dispatch, ants } = this.props
+    const { calculated, dispatch } = this.props
+    const allCalculated = Object.keys(calculated).length === 5
 
-    if (!calculating) {
-      dispatch(resetCalculations(ants))
-      console.log('RESET CALCULATIONS', calculating)
+    if (allCalculated) {
+      dispatch(resetCalculations(calculated))
+      console.log('RESET CALCULATIONS', calculated)
     }
   }
 
@@ -63,20 +63,29 @@ class App extends Component {
     return <Ants ants={ ants } />
   }
 
-  render() {
+  renderCTA() {
     const { calculating, calculated } = this.props
+    const allCalculated = Object.keys(calculated).length === 5
+    let cta
+    
+    allCalculated ?
+      cta = <CTA label='Reset Win Rates'
+                 handleAction={ this.handleResetCalculations } /> :
+      (calculating ? 
+        cta = 'Calculating...' : 
+        cta = <CTA label='Calculate Win Rates'
+                   handleAction={ this.handleRunCalculations } />)
+    
+    return cta
+  }
 
-    console.log(this.props)
-
+  render() {
     return (
       <Container>
         <Header />
         <Main>
           { this.renderAnts() }
-          <CTA calculating={ calculating } 
-               calculated={ calculated } 
-               handleRunCalculations={ this.handleRunCalculations }
-               handleResetCalculations={ this.handleResetCalculations } />
+          { this.renderCTA() }
         </Main>
         <Footer />
       </Container>
@@ -123,8 +132,6 @@ query AntsQuery {
     length
     weight
     image
-    calculation
-    calculating
   }
 }
 `
@@ -134,8 +141,7 @@ const mapStateToProps = state => {
 
   return {
     calculating: ants.calculating,
-    calculated: ants.calculated,
-    ants: ants.ants
+    calculated: ants.calculated
   }
 }
 

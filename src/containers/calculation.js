@@ -10,17 +10,19 @@ class Calculation extends Component {
   static propTypes = {
     ant: PropTypes.object.isRequired,
     calculating: PropTypes.bool.isRequired,
-    calculated: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    // calculation: PropTypes.int.isRequired
+    calculated: PropTypes.object.isRequired,
+    calculations: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   componentDidMount() {
     const { dispatch, ant } = this.props
     
+    console.log('MOUNTED ', ant)
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('NEW PROPS')
     if (nextProps.calculating) {
       const { dispatch, ant } = nextProps
 
@@ -29,14 +31,16 @@ class Calculation extends Component {
   }
 
   render() {
-    const { calculating, calculation } = this.props
+    const { ant, calculating, calculations } = this.props
+    const hasCalculations = Object.keys(calculations).length > 0
+    // const calculation = calculations[ant.name].calculation
 
     return (
       <Container>
         { calculating ?
           <Message>Calculation in progress</Message> :
-          ( calculation > 0 ?
-            <Message>{ calculation }</Message> :
+          ( hasCalculations ?
+            <Message>get calculation for this ant</Message> :
             null )}
       </Container>
     )
@@ -52,20 +56,15 @@ const Message = styled.p`
   margin: 0;
 `
 
-Calculation.propTypes = {
-  calculating: PropTypes.bool,
-  calculation: PropTypes.number
-}
-
 const mapStateToProps = state => {
-  const { calculation } = state
-  console.log(calculation)
+  const { ants, calculations } = state
+
+  console.log(calculations)
 
   return {
-    ant: calculation.ant,
-    calculating: calculation.calculating,
-    calculated: calculation.calculated,
-    calculation: calculation.calculation
+    calculating: ants.calculating,
+    calculated: ants.calculated,
+    calculations
   }
 }
 
