@@ -4,7 +4,12 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { runCalculations, endCalculations, resetCalculations } from '../actions/index'
+import { 
+  mapStateToAnts,
+  runCalculations, 
+  endCalculations, 
+  resetCalculations 
+} from '../actions/index'
 import Header from '../components/header'
 import Ants from '../components/ants'
 import CTA from '../components/cta'
@@ -14,25 +19,30 @@ class App extends Component {
 
   static propTypes = {
     calculating: PropTypes.bool.isRequired,
-    calculated: PropTypes.object.isRequired,
+    calculated: PropTypes.bool.isRequired,
+    calculationsByAnt: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
-  componentWillReceiveProps(nextProps) {
-    const allCalculated = Object.keys(nextProps.calculated).length === 5
-    
-    console.log(this.props, nextProps)
-    if (allCalculated) {
-      const { dispatch, calculated } = nextProps
+  // componentDidMount() {
+  //   const { dispatch } = this.props
+  // }
 
+  componentWillReceiveProps(nextProps) {
+    const { calculating, calculated, dispatch } = nextProps
+    console.log('WILL RECEIVE PROPS ', this.props, nextProps)
+
+    if (!calculating && calculated) {
+      console.log('ending calculations', calculated)
       dispatch(endCalculations(calculated))
     }
   }
 
   handleRunCalculations = () => {
-    const { calculating, dispatch } = this.props
+    const { calculating, antsQuery, dispatch } = this.props
      
     if (!calculating) {
+      dispatch(mapStateToAnts(antsQuery.allAnts))
       dispatch(runCalculations(calculating))
       console.log('RUNNING CALCULATIONS', calculating)
     }
@@ -40,9 +50,8 @@ class App extends Component {
 
   handleResetCalculations = () => {
     const { calculated, dispatch } = this.props
-    const allCalculated = Object.keys(calculated).length === 5
 
-    if (allCalculated) {
+    if (calculated) {
       dispatch(resetCalculations(calculated))
       console.log('RESET CALCULATIONS', calculated)
     }
@@ -65,10 +74,9 @@ class App extends Component {
 
   renderCTA() {
     const { calculating, calculated } = this.props
-    const allCalculated = Object.keys(calculated).length === 5
     let cta
     
-    allCalculated ?
+    calculated ?
       cta = <CTA label='Reset Win Rates'
                  handleAction={ this.handleResetCalculations } /> :
       (calculating ? 
@@ -127,6 +135,7 @@ const Message = styled.aside`
 export const ANTS_QUERY = gql`
 query AntsQuery {
   allAnts {
+    id
     name
     color
     length
@@ -139,9 +148,12 @@ query AntsQuery {
 const mapStateToProps = state => {
   const { ants } = state
 
+  console.log(ants.calculationsByAnt)
+
   return {
     calculating: ants.calculating,
-    calculated: ants.calculated
+    calculated: ants.calculated,
+    calculationsByAnt: ants.calculationsByAnt
   }
 }
 

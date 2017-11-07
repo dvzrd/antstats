@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Calculation from '../containers/calculation'
+import Calculation from './calculation'
 
 const Ants = ({ ants }) => (
   <Component>
@@ -25,7 +25,8 @@ const Ants = ({ ants }) => (
                 <Value>{ ant.weight }mg</Value>
               </Item>
             </List>
-            <Calculation ant={ ant } />
+            <Calculation ant={ ant }
+                          />
             <Image src={ ant.image } alt={ ant.name } />
           </Figure>
         </Ant>

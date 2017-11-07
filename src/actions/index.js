@@ -1,5 +1,7 @@
+import { arrayToObject, mutateObjects } from '../utils'
 import { generateAntWinLikelihoodCalculator } from '../utils/generateAntWinLikelihoodCalculator'
 
+export const MAP_STATE_TO_ANTS = 'MAP_STATE_TO_ANTS'
 export const RUN_CALCULATIONS = 'RUN_CALCULATIONS'
 export const END_CALCULATIONS = 'END_CALCULATIONS'
 export const RESET_CALCULATIONS = 'RESET_CALCULATIONS'
@@ -7,6 +9,23 @@ export const REQUEST_CALCULATION = 'REQUEST_CALCULATION'
 export const RECEIVE_CALCULATION = 'RECEIVE_CALCULATION'
 export const SET_CALCULATION = 'SET_CALCULATION'
 export const RESET_CALCULATION = 'RESET_CALCULATION'
+
+export const mapStateToAnts = ants => {
+  // @TODO: move to reducer
+  const members = {
+    calculating: true,
+    calculation: 0
+  }
+  const mutatedAnts = mutateObjects(ants, members)
+  const reducedAnts = arrayToObject(mutatedAnts)
+
+  console.log(mutatedAnts)
+  console.log(reducedAnts)
+  return {
+    type: MAP_STATE_TO_ANTS,
+    reducedAnts
+  }
+}
 
 export const runCalculations = ants => ({
   type: RUN_CALCULATIONS,
@@ -23,10 +42,14 @@ export const resetCalculations = ants => ({
   ants
 })
 
-export const requestCalculation = ant => ({
-  type: REQUEST_CALCULATION,
-  ant 
-})
+export const requestCalculation = ant => {
+  console.log('REQUEST CALCULATION ', ant)
+
+  return {
+    type: REQUEST_CALCULATION,
+    ant 
+  }
+}
 
 export const receiveCalculation = (ant, calculation) => {
   console.log('RECEIVE CALCULATION ', ant, calculation)

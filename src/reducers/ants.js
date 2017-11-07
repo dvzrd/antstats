@@ -1,8 +1,12 @@
-import { RUN_CALCULATIONS, END_CALCULATIONS, RESET_CALCULATIONS } from '../actions'
+import { 
+  MAP_STATE_TO_ANTS, RUN_CALCULATIONS, 
+  END_CALCULATIONS, RESET_CALCULATIONS 
+} from '../actions'
 
 const INITIAL_STATE = {
     calculating: false,
-    calculated: {}
+    calculated: false,
+    calculationsByAnt: {},
 }
 
 const ants = (state = INITIAL_STATE, action) => {
@@ -16,7 +20,13 @@ const ants = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         calculating: false,
-        calculated: action.calculated
+        calculated: true
+      }
+    case MAP_STATE_TO_ANTS:
+      console.log(action.reducedAnts, state)
+      return {
+        ...state,
+        calculationsByAnt: action.reducedAnts
       }
     case RESET_CALCULATIONS:
     default:
